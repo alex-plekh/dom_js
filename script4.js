@@ -11,131 +11,83 @@
 // Сделайте по возможности красиво, разметка и стили на ваше
 // усмотрение.
 
-const mainBtn = document.createElement('button');
+
+const myBtn = document.createElement('button');
 const container = document.createElement("div");
-mainBtn.innerHTML = 'Get information about users';
-mainBtn.style.width = '300 px';
-mainBtn.style.height = '100 px';
-mainBtn.style.textAlign = 'center';
-mainBtn.style.backgroundColor = '#00FFFF';
-mainBtn.style.fontSize = '18px';
-mainBtn.style.cursor = 'pointer';
-mainBtn.style.padding = '10px 15px';
+
+myBtn.innerHTML = 'Get information about users';
+myBtn.style.width = '400 px';
+myBtn.style.height = '100 px';
+myBtn.style.textAlign = 'center';
+myBtn.style.backgroundColor = '#00FFFF';
+myBtn.style.fontSize = '18px';
+myBtn.style.cursor = 'pointer';
+myBtn.style.padding = '20px 20px';
+myBtn.style.margin = '40px';
+myBtn.style.border = 'none';
+myBtn.style.borderRadius = '8px';
 container.style.textAlign = 'center';
 document.body.appendChild(container);
-container.appendChild(mainBtn);
+container.appendChild(myBtn);
 
 
-// async function getUserFromServer() {
-//     let response = await fetch('https://jsonplaceholder.typicode.com/users');
-//     return  await response.json();
-// }
-//
-// mainBtn.addEventListener("click", e => {
-//     mainBtn.hidden = true;
-//     const body = document.querySelector('body');
-//
-//     getUserFromServer()
-//         .then(users => {
-//             // let count = 0;
-//             // for (let user of users) {
-//             console.log(users)
-//                 let user = users.map(item => {
-//         return `
-//          <div class="card">
-//           <h2 class="name">${item.name}</h2>
-//           <p class="userName">user name: ${item.username}</p>
-//           <div class="adress">adress :
-//             <span class="city">${item.address.city}, </span>
-//             <span class="suite">${item.address.suite}</span>
-//           </div>
-//           <p class="company">working in ${item.company.name}</p>
-//           <div class="contacts">
-//             <span>contacts: </span>
-//             <span>${item.email}, </span>
-//             <span>${item.phone}</span>
-//           </div>
-//         </div>
-//         `
-//     }).join('')
-//
-//             console.log(user)
-//             // }
-//         })
-//         .catch(error => console.log(error));
-// });
+async function getUserFromServer() {
+    let response = await fetch('https://jsonplaceholder.typicode.com/users');
+    return await response.json();
+}
 
-// mainBtn.addEventListener("click", e => {
-//     mainBtn.hidden = true;
-//     const body = document.querySelector('body');
-//
-//
-// async function getUserFromServer() {
-//     let response = await fetch('https://jsonplaceholder.typicode.com/users');
-//     let data = await response.json();
-//     let user = data.map(item => {
-//         return `
-//          <div class="card">
-//           <h2 class="name">${item.name}</h2>
-//           <p class="userName">user name: ${item.username}</p>
-//           <div class="adress">adress :
-//             <span class="city">${item.address.city}, </span>
-//             <span class="suite">${item.address.suite}</span>
-//           </div>
-//           <p class="company">working in ${item.company.name}</p>
-//           <div class="contacts">
-//             <span>contacts: </span>
-//             <span>${item.email}, </span>
-//             <span>${item.phone}</span>
-//           </div>
-//         </div>
-//         `
-//     }).join('')
-//
-// }
-// })
-
-mainBtn.addEventListener("click", e => {
-    mainBtn.hidden=true;
-    const body = document.querySelector('body');
-    const url = fetch('https://jsonplaceholder.typicode.com/users');
-
-    url.then(response => response.json())
+myBtn.addEventListener("click", e => {
+    myBtn.hidden = true;
+    
+    container.style.background = '#ffffcc';
+    container.style.textAlign = 'center';
+    container.style.display = 'flex';
+    container.style.flexWrap = 'wrap';
+    container.style.justifyContent = 'space-between';
+    
+    getUserFromServer()
         .then(users => {
-            let count = 0;
-            for (user in users) {
-                body.innerHTML += `<div 
-                class="section-${count}" 
-                style="width: 100%; text-align: center; vertical-align: center; margin: 0 10px 20px;"
-                ></div>`;
-                body.style.background = '#98FB98'
-                createHeading(users[user], `.section-${count}`);
-                // createImage(users[user], `.section-${count}`);
-                // createInfo(users[user], `.section-${count}`);
+            for (let user of users) {
+                createCard(user);
             }
-
         })
-
         .catch(error => console.log(error));
 
-    function createHeading({title}, elem) {
-        body.querySelector(elem).innerHTML +=
-            `<header 
-            style="text-align: center; margin:40px 0 40px 0; font-size: 40px; font-weight: 800; color: #414a4c;"
-        >${name}</header>`;
-    }
 
-    // function createInfo({info}, elem) {
-    //     let infoHTML = info.map(paragraph =>
-    //         `<p style="font-size: 30px;font-weight: 500; width: 75%; text-align: center; margin: 0 auto;line-height: 1.5"
-    //         >${city}</p>`);
-    //     body.querySelector(elem).innerHTML += infoHTML.join('');
-    // }
-    // function createImage({url, title}, elem) {
-    //     body.querySelector(elem).innerHTML +=
-    //         `<img 
-    //         src="${url}" 
-    //         alt="${title}" 
-    //         style="text-align: center; width: 800px; height: auto; border-radius: 20px;margin-bottom: 40px;">`;
-    // }
-})
+    function createCard(user) {
+        let div1 = document.createElement("div");
+        div1.style.width = '30%';
+        div1.style.margin = '40px 20px';
+        div1.style.backgroundColor = '#ccccff';
+        div1.style.borderRadius = '10px';
+        container.appendChild(div1);
+
+        for (data in user) {
+            let inf;
+            if (typeof user[data] == 'object') {
+                inf = data + " : ";
+                for (field in user[data]) {
+                    if (typeof user[data][field] == 'object') {
+                        inf += field + " ";
+                        for (innerField in user[data][field]) {
+                            console.log(innerField + field[innerField]);
+                            inf += innerField + " : " + user[data][field][innerField] + "  ";
+                        }
+                    } else {
+                        inf += field + "  " + user[data][field] + ",  ";
+                    }
+                }
+
+            } else {
+                inf = data + "   " + user[data];
+            }
+            let p1 = document.createElement("p");
+            p1.style.lineHeight = '2';
+            p1.style.fontWeight = '500';
+            p1.style.margin = '0 10px 0 10px';
+            div1.appendChild(p1);
+            p1.innerHTML = inf;
+        }
+    }
+});
+
